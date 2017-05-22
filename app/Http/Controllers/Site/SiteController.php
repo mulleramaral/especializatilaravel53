@@ -26,11 +26,17 @@ class SiteController extends Controller
     }
 
     public function index(){
-        return 'Home da Page do Site';
+        $title = 'Titulo teste';
+        $xss = '<script>alert("Ataque XSS");</script>';
+        $var1 = '1243';
+        $arrayData = [1,2,3,4,5,6,7,8,9];
+        //$arrayData = [];
+
+        return view('site.home.index',compact('title','xss','var1','arrayData'));
     }
 
     public function contato(){
-        return 'Pagina contato';
+        return view('site.contato.index');
     }
 
     public function categoria($id){
