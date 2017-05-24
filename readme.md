@@ -1,15 +1,15 @@
-# 1 - Criar projeto #
+## 01 - Criar projeto ##
 
-## Via Laravel Installer ##
+# Via Laravel Installer #
 <code>composer global require "laravel/installer" laravel new blog</code>
 
-## Via Composer ##
+# Via Composer #
 <code>composer create-project --prefer-dist laravel/laravel blog </code>
 
 # 2 - Gerar Key #
 <code>php artisan key:generate</code>
 
-## 01 - ROTAS ##
+## 02 - ROTAS ##
 
 <pre>
 Route::group(['prefix' => 'painel','middleware' => 'auth'],function(){
@@ -85,8 +85,18 @@ Route::get('/', function () {
 });
 </pre>
 
-## 02 - CONTROLLERS ##
-
+## 03 - CONTROLLERS ##
+<pre><code>
 php artisan make:controller NomeDoController
 php artisan make:controller NameSpace\NomeController
 php artisan make:controller NameSpace\NomeController --resource
+</code></pre>
+
+## 04 - MIGRATIONS ##
+<pre>
+01 - para executar o migrate
+<code>php artisan migrate</code>
+ 
+02 - Se renomear a migration é necessario fazer o dump autload 
+<code>composer dump-autoload</code>
+</pre>
