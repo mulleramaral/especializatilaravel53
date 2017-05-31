@@ -8,14 +8,22 @@ use App\Http\Controllers\Controller;
 
 class ProdutoController extends Controller
 {
+
+    private $product;
+
+    public function __construct(Product $product)
+    {
+        $this->product = $product;
+    }
+
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response|string
      */
-    public function index(Product $product)
+    public function index()
     {
-        $products = $product->all();
+        $products = $this->product->all();
         return view('painel.products.index',compact('products'));
     }
 
@@ -83,5 +91,43 @@ class ProdutoController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function testes()
+    {
+        /* Maneira Improdutiva
+        $prod = $this->product;
+        $prod->nome = 'Nome do Produto';
+        $prod->number = 1231231;
+        $prod->active = true;
+        $prod->category = 'eletronicos';
+        $prod->description = 'Descrição do Produto';
+        $insert = $prod->save();
+        */
+
+        /* Prejudica a segurança da aplicação
+        $insert = $this->product->insert([
+                        'name'          => 'Nome do Produto',
+                        'number'        => 434435,
+                        'active'        => false,
+                        'category'      => 'eletronicos',
+                        'description'   => 'Descrição vem aqui'
+                    ]);
+        */
+
+        /* Precisa Especificar quais colunas devem ser preenchidas */
+        $insert = $this->product->create([
+            'name'          => 'Nome do Produto',
+            'number'        => 434435,
+            'active'        => false,
+            'category'      => 'eletronicos',
+            'description'   => 'Descrição vem aqui'
+        ]);
+
+
+        if($insert)
+            return "Inserido com sucesso, ID: {$insert->id}";
+        else
+            return 'Fala ao inserir';
     }
 }
