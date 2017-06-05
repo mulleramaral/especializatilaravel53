@@ -1,6 +1,7 @@
 <?php
 use Illuminate\Support\Facades\Route;
 
+Route::get('painel/produtos/testes','Painel\ProdutoController@testes');
 Route::resource('/painel/produtos','Painel\ProdutoController');
 
 Route::group(['namespace' => 'Site'],function(){

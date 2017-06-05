@@ -2,11 +2,20 @@
 
 namespace App\Http\Controllers\Painel;
 
+use App\Models\Painel\Product;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 class ProdutoController extends Controller
 {
+
+    private $product;
+
+    public function __construct(Product $product)
+    {
+        $this->product = $product;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -14,7 +23,9 @@ class ProdutoController extends Controller
      */
     public function index()
     {
-        return 'Listagem dos produtos';
+        $title = 'Listagem dos Produtos';
+        $products = $this->product->all();
+        return view('painel.products.index',compact('products','title'));
     }
 
     /**
@@ -81,5 +92,95 @@ class ProdutoController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function testes()
+    {
+        /** INSERT */
+
+        /* Maneira Improdutiva
+        $prod = $this->product;
+        $prod->nome = 'Nome do Produto';
+        $prod->number = 1231231;
+        $prod->active = true;
+        $prod->category = 'eletronicos';
+        $prod->description = 'Descrição do Produto';
+        $insert = $prod->save();
+        */
+
+        /* Prejudica a segurança da aplicação
+        $insert = $this->product->insert([
+                        'name'          => 'Nome do Produto',
+                        'number'        => 434435,
+                        'active'        => false,
+                        'category'      => 'eletronicos',
+                        'description'   => 'Descrição vem aqui'
+                    ]);
+        */
+
+        /* MODE MAIS PRODUTIVO Precisa Especificar quais colunas devem ser preenchidas */
+        /*
+        $insert = $this->product->create([
+            'name'          => 'Nome do Produto',
+            'number'        => 434435,
+            'active'        => false,
+            'category'      => 'eletronicos',
+            'description'   => 'Descrição vem aqui'
+        ]);
+
+
+        if($insert)
+            return "Inserido com sucesso, ID: {$insert->id}";
+        else
+            return 'Fala ao inserir';
+
+        */
+
+        /** UPDATE **/
+
+
+        /* Maneira improdutiva
+        $prod->name = 'Nome do Produto update';
+        $prod->number = 12343456;
+        $prod->active = true;
+        $prod->category = 'eletronicos';
+        $prod->description = 'task update';
+        $update = $prod->save();
+        */
+
+        /*
+        $prod = $this->product->find(5);
+
+        $update = $prod->update([
+            'name'          => 'Update teste',
+            'number'        => 888,
+            'active'        => false,
+        ]);
+
+        $prod = $this->product->where('number',888)
+                              ->update([
+                                  'name'   => 'Update teste',
+                                  'number' => 123456789,
+                                  'active' => true
+                              ]);
+
+        if($update)
+            return 'Alterado com sucesso 2';
+        else
+            return 'Falha ao alterar';
+        */
+
+        /** DELETE */
+
+        //$this->product->destroy(1);
+        //$this->product->destroy([1,2,3,4]);
+
+        $prod = $this->product->find(3);
+        $delete = $prod->delete();
+        if($delete)
+            return 'Deletado com sucesso';
+        else
+            return 'Falha ao deletar';
+
     }
 }

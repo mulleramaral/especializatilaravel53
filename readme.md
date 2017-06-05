@@ -100,3 +100,19 @@ php artisan make:controller NameSpace\NomeController --resource
 02 - Se renomear a migration é necessario fazer o dump autload 
 <code>composer dump-autoload</code>
 </pre>
+
+<pre>
+03 - Se precisar modificar algum migration.
+Basta alterar e fazer um refresh
+
+php artisan migrate:refresh
+</pre>
+
+## 05 - SEEDERS ##
+<pre>
+01 - Para criar um seeder
+<code>php artisan make:seeder NomeTableSeeder</code>
+
+02 - Para executar o seeder
+<code>php artisan db:seed</code>
+</pre>
