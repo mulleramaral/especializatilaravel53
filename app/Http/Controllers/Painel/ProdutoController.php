@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Painel;
 use App\Models\Painel\Product;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Validator;
 
 class ProdutoController extends Controller
 {
@@ -52,6 +53,36 @@ class ProdutoController extends Controller
         //dd($request->only(['name','number']));
         //dd($request->except(['_token']));
         //dd($request->input('name'));
+
+        //Pega todos os dados que vem do formulário
+        $dataForm = $request->all();
+        $dataForm['active'] = !isset($dataForm['active']) == '' ? false: true;
+
+        //Valida os dados
+        //$this->validate($request,$this->product->rules);
+
+        $messages = [
+            'name.required'  => 'O campo nome é de preenchimento obrigatório',
+            'number.numeric' => 'Precisa ser apenas numeros',
+            'number.required' => 'O campo numero é de preenchimento obrigatório'
+        ];
+
+        $validate = validator($dataForm,$this->product->rules,$messages);
+
+        if($validate->fails()){
+            return redirect()
+                   ->route('produtos.create')
+                   ->withErrors($validate)
+                   ->withInput();
+        }
+
+        //Faz o cadastro
+        $insert = $this->product->create($dataForm);
+
+        if($insert)
+            return redirect()->route('produtos.index');
+        else
+            return redirect()->route('produtos.create');
 
         return 'Cadastrado';
     }
