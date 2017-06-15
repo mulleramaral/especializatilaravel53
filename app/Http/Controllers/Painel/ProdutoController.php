@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\Painel;
 
+use App\Http\Requests\Painel\ProductFormRequest;
 use App\Models\Painel\Product;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Validator;
 
 class ProdutoController extends Controller
 {
@@ -38,7 +38,7 @@ class ProdutoController extends Controller
     {
         $title ='Cadastrar Novo Produto';
         $categorys = ['eletronicos','moveis','limpeza','banho'];
-        return view('painel.products.create',compact('title','categorys'));
+        return view('painel.products.create-edit',compact('title','categorys'));
     }
 
     /**
@@ -47,7 +47,7 @@ class ProdutoController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(ProductFormRequest $request)
     {
         //dd($request->all());
         //dd($request->only(['name','number']));
@@ -61,12 +61,8 @@ class ProdutoController extends Controller
         //Valida os dados
         //$this->validate($request,$this->product->rules);
 
-        $messages = [
-            'name.required'  => 'O campo nome é de preenchimento obrigatório',
-            'number.numeric' => 'Precisa ser apenas numeros',
-            'number.required' => 'O campo numero é de preenchimento obrigatório'
-        ];
 
+        /*
         $validate = validator($dataForm,$this->product->rules,$messages);
 
         if($validate->fails()){
@@ -75,6 +71,7 @@ class ProdutoController extends Controller
                    ->withErrors($validate)
                    ->withInput();
         }
+        */
 
         //Faz o cadastro
         $insert = $this->product->create($dataForm);
@@ -106,7 +103,11 @@ class ProdutoController extends Controller
      */
     public function edit($id)
     {
-        //
+        $product = $this->product->find($id);
+        $title = "Editar Produto: {$product->name}";
+        $categorys = ['eletronicos','moveis','limpeza','banho'];
+
+        return view('painel.products.create-edit',compact('title','categorys','product'));
     }
 
     /**
@@ -118,7 +119,7 @@ class ProdutoController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        return 'update';
     }
 
     /**
